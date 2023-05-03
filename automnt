@@ -1,0 +1,25 @@
+#!/bin/bash
+
+files=''
+notif=''
+
+#while :
+#do
+    for f in /dev/sd*1
+    do
+        [[ -e "$f" ]] || files='' break # no device plugged in
+        if ! [ "$f" == "/dev/sda1" ]
+        then
+            if ! [ "$files" == "$f" ];
+            then
+                files=$f
+                notif=$(udisksctl mount -b "$files")
+                notify-send -a "Automount" -t 5000 "Automount" "$notif"
+                echo "$files"
+                break
+            fi
+        fi
+    done
+
+    sleep 1
+#done
